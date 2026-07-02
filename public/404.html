@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting…</title>
+    <!--
+      Single Page App fallback for GitHub Pages.
+
+      GitHub Pages has no server-side routing, so a hard refresh on a deep link
+      (e.g. /fr/projects/some-slug) returns this 404 page. We stash the requested
+      URL in sessionStorage and bounce back to the app root; index.html then
+      restores the URL and lets React Router render the correct page.
+
+      pathSegmentsToKeep:
+        - 0  -> user/org site served from '/'      (username.github.io)
+        - 1  -> project site served from '/<repo>/' (change to 1 if you deploy
+                to https://username.github.io/<repo>/)
+    -->
+    <script>
+      (function () {
+        var pathSegmentsToKeep = 0;
+
+        var l = window.location;
+        var basePath =
+          l.pathname
+            .split('/')
+            .slice(0, 1 + pathSegmentsToKeep)
+            .join('/') + '/';
+        var rest = l.pathname.slice(basePath.length);
+
+        sessionStorage.redirect = l.origin + basePath + rest + l.search + l.hash;
+        l.replace(l.origin + basePath);
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>
