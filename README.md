@@ -124,11 +124,11 @@ content lives in `src/data` and translatable UI strings live in `src/i18n`.
 
 ## GitHub Pages
 
-The site is deployed as a **user site** at `https://<username>.github.io/` from a
-repository named `<username>.github.io`. The app uses `base: '/'` (default).
+The site is deployed as a **project site** at `https://<username>.github.io/Eportfolio/`
+from a repository named `Eportfolio`. CI sets `BASE_PATH=/Eportfolio/` at build time;
+local dev keeps `base: '/'`.
 
-Because GitHub Pages has no server-side routing, `public/404.html` and an inline
-script in `index.html` restore deep links (e.g. `/fr/projects/some-slug`) on refresh.
+`public/404.html` and an inline script in `index.html` restore deep links on refresh.
 
 `.github/workflows/deploy.yml` deploys on every push to `main`: lint, typecheck,
 build, then publish via GitHub Actions.
