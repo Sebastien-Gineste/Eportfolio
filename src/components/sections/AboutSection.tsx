@@ -1,46 +1,8 @@
 import type { ReactNode } from 'react';
 import { useI18n } from '@/i18n/context';
 import { education, experience } from '@/data';
-import { Section } from '@/components/ui';
+import { BriefcaseIcon, GraduationCapIcon, Section } from '@/components/ui';
 import { JourneyTimeline } from '@/components/sections/JourneyTimeline';
-
-function GraduationCapIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      className="size-5"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={2}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M12 4 2 9l10 5 10-5-10-5Zm0 0v0M6 11.5V16c0 1.1 2.7 2 6 2s6-.9 6-2v-4.5M20 10v4"
-      />
-    </svg>
-  );
-}
-
-function BriefcaseIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      className="size-5"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={2}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M4 8h16a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Zm5 0V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"
-      />
-    </svg>
-  );
-}
 
 function SubHeader({ icon, children }: { icon: ReactNode; children: ReactNode }) {
   return (

@@ -7,3 +7,4 @@ export { Container } from './Container';
 export { Pagination } from './Pagination';
 export { ProjectImage } from './ProjectImage';
 export { Section } from './Section';
+export * from './icons';

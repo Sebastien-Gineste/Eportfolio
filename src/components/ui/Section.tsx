@@ -50,7 +50,7 @@ export function Section({
       className={cx(
         'focus:outline-none',
         fullHeight
-          ? cx('flex min-h-svh flex-col py-24', alignTop ? 'justify-start' : 'justify-center')
+          ? cx('flex min-h-svh flex-col py-16', alignTop ? 'justify-start' : 'justify-center')
           : compactBottom
             ? 'pt-12 pb-6 sm:pt-16 sm:pb-8'
             : 'py-12 sm:py-16',

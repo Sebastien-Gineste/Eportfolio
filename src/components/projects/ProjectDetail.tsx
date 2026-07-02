@@ -1,31 +1,12 @@
 import type { Project } from '@/types';
 import { useI18n } from '@/i18n/context';
-import { Badge, ProjectImage } from '@/components/ui';
+import { Badge, ProjectImage, TrophyIcon } from '@/components/ui';
 import { cx } from '@/utils';
 
 interface ProjectDetailProps {
   project: Project;
   className?: string;
   titleId?: string;
-}
-
-function TrophyIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      className="mt-0.5 size-5 shrink-0 text-amber-500"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={2}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M8 4h8v4a4 4 0 0 1-8 0V4Zm0 2H5v1a3 3 0 0 0 3 3m8-4h3v1a3 3 0 0 1-3 3m-4 4v3m-3 3h6m-5 0 .5-3h3l.5 3"
-      />
-    </svg>
-  );
 }
 
 /** Full project detail content. */
@@ -50,7 +31,7 @@ export function ProjectDetail({ project, className, titleId }: ProjectDetailProp
               key={award.label.en}
               className="flex items-start gap-2.5 rounded-lg border border-amber-400/40 bg-amber-400/10 p-3"
             >
-              <TrophyIcon />
+              <TrophyIcon className="mt-0.5 size-5 shrink-0 text-amber-500" />
               {award.url ? (
                 <a
                   href={award.url}

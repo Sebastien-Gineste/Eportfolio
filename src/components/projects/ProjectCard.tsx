@@ -1,5 +1,5 @@
 import type { Language, Project } from '@/types';
-import { Badge, ButtonLink, ProjectImage } from '@/components/ui';
+import { Badge, ButtonLink, ProjectImage, TrophyIcon } from '@/components/ui';
 import { cx, localizedPath } from '@/utils';
 
 interface ProjectCardProps {
@@ -9,18 +9,6 @@ interface ProjectCardProps {
   teamLabel: string;
   awardedLabel: string;
   isSelected?: boolean;
-}
-
-function TrophyIcon() {
-  return (
-    <svg aria-hidden="true" className="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M8 4h8v4a4 4 0 0 1-8 0V4Zm0 2H5v1a3 3 0 0 0 3 3m8-4h3v1a3 3 0 0 1-3 3m-4 4v3m-3 3h6m-5 0 .5-3h3l.5 3"
-      />
-    </svg>
-  );
 }
 
 /** Compact project row for the paginated explorer. */
@@ -69,7 +57,7 @@ export function ProjectCard({
           <h3 className="font-semibold leading-snug">{title}</h3>
           {firstAward && (
             <span className="inline-flex items-center gap-1 rounded-full border border-amber-400/40 bg-amber-400/10 px-2 py-0.5 text-[11px] font-medium text-amber-600 dark:text-amber-400">
-              <TrophyIcon />
+              <TrophyIcon className="size-3.5" />
               {awardLabel}
             </span>
           )}

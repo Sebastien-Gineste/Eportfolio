@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useI18n } from '@/i18n/context';
 import { projects } from '@/data';
@@ -12,6 +12,7 @@ import {
   totalPages,
 } from '@/utils/projects';
 import { Pagination } from '@/components/ui/Pagination';
+import { TrophyIcon } from '@/components/ui';
 import { ProjectCard } from '@/components/projects/ProjectCard';
 import { ProjectCardPlaceholder } from '@/components/projects/ProjectCardPlaceholder';
 
@@ -35,18 +36,6 @@ function FilterIcon() {
       className="h-5 w-5"
     >
       <path d="M3 5h14M6 10h8M9 15h2" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function TrophyIcon() {
-  return (
-    <svg aria-hidden="true" className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M8 4h8v4a4 4 0 0 1-8 0V4Zm0 2H5v1a3 3 0 0 0 3 3m8-4h3v1a3 3 0 0 1-3 3m-4 4v3m-3 3h6m-5 0 .5-3h3l.5 3"
-      />
     </svg>
   );
 }
@@ -86,15 +75,18 @@ export function ProjectExplorer({ selectedSlug }: ProjectExplorerProps) {
   const [page, setPage] = useState(1);
   const [filtersOpen, setFiltersOpen] = useState(awardedParam);
   const [previousSelectedSlug, setPreviousSelectedSlug] = useState(selectedSlug);
+  const [previousAwardedParam, setPreviousAwardedParam] = useState(awardedParam);
 
-  // React to the `?awarded=1` deep link (e.g. the hero "awarded projects" link).
-  useEffect(() => {
+  // React to the `?awarded=1` deep link (e.g. the hero "awarded projects" link)
+  // by adjusting state during render rather than in an effect.
+  if (awardedParam !== previousAwardedParam) {
+    setPreviousAwardedParam(awardedParam);
     if (awardedParam) {
       setAwarded(true);
       setFiltersOpen(true);
       setPage(1);
     }
-  }, [awardedParam]);
+  }
 
   const typeOptions = useMemo(() => getProjectTypes(projects, language), [language]);
   const tagOptions = useMemo(() => getProjectTags(projects), []);
@@ -240,7 +232,7 @@ export function ProjectExplorer({ selectedSlug }: ProjectExplorerProps) {
               >
                 <span className="flex items-center gap-2 text-sm font-medium">
                   <span className={cx(awarded ? 'text-amber-500' : 'text-muted-foreground')}>
-                    <TrophyIcon />
+                    <TrophyIcon className="size-4" />
                   </span>
                   {t.projects.filterAwarded}
                 </span>
