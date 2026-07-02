@@ -36,7 +36,16 @@ export function Header() {
     navigate({ pathname: localizedPath(language), hash: `#${id}` });
   };
 
-  const linkClasses = (isActive: boolean) =>
+  const desktopLinkClasses = (isActive: boolean) =>
+    cx(
+      'rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
+      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+      isActive
+        ? 'bg-background text-foreground shadow-sm'
+        : 'text-muted-foreground hover:text-foreground',
+    );
+
+  const mobileLinkClasses = (isActive: boolean) =>
     cx(
       'rounded-md px-3 py-2 text-sm font-medium transition-colors',
       isActive
@@ -45,25 +54,32 @@ export function Header() {
     );
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-md">
       <Container>
         <div className="flex h-16 items-center justify-between gap-4">
           <a
             href="#hero"
             onClick={(event) => goToSection(event, 'hero')}
-            className="rounded-md text-base font-bold tracking-tight"
+            className="group inline-flex items-center gap-2 rounded-md text-base font-bold tracking-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
+            <span
+              aria-hidden="true"
+              className="size-2 rounded-full bg-primary transition-transform group-hover:scale-125"
+            />
             {profile.name}
           </a>
 
-          <nav aria-label={t.nav.home} className="hidden items-center gap-1 md:flex">
+          <nav
+            aria-label={t.nav.home}
+            className="hidden items-center gap-1 rounded-lg border border-border bg-muted/40 p-1 md:flex"
+          >
             {navItems.map((item) => (
               <a
                 key={item.id}
                 href={item.href}
                 aria-current={isNavActive(item.id) ? 'true' : undefined}
                 onClick={(event) => goToSection(event, item.id)}
-                className={linkClasses(isNavActive(item.id))}
+                className={desktopLinkClasses(isNavActive(item.id))}
               >
                 {item.label}
               </a>
@@ -77,15 +93,21 @@ export function Header() {
             <ThemeToggle />
             <button
               type="button"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-md text-foreground hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:hidden"
+              className="inline-flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary md:hidden"
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
               aria-label={menuOpen ? t.nav.closeMenu : t.nav.openMenu}
               onClick={() => setMenuOpen((open) => !open)}
             >
-              <span aria-hidden="true" className="text-lg leading-none">
-                {menuOpen ? '✕' : '☰'}
-              </span>
+              {menuOpen ? (
+                <svg aria-hidden="true" className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6 6 18" />
+                </svg>
+              ) : (
+                <svg aria-hidden="true" className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 7h16M4 12h16M4 17h16" />
+                </svg>
+              )}
             </button>
           </div>
         </div>
@@ -94,7 +116,7 @@ export function Header() {
           <nav
             id="mobile-menu"
             aria-label={t.nav.openMenu}
-            className="flex flex-col gap-1 pb-4 md:hidden"
+            className="mt-2 flex flex-col gap-1 border-t border-border pt-3 pb-4 md:hidden"
           >
             {navItems.map((item) => (
               <a
@@ -102,7 +124,7 @@ export function Header() {
                 href={item.href}
                 aria-current={isNavActive(item.id) ? 'true' : undefined}
                 onClick={(event) => goToSection(event, item.id)}
-                className={linkClasses(isNavActive(item.id))}
+                className={mobileLinkClasses(isNavActive(item.id))}
               >
                 {item.label}
               </a>

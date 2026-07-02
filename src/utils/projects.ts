@@ -6,6 +6,12 @@ export interface ProjectFilters {
   query: string;
   type: string;
   tags: string[];
+  awarded: boolean;
+}
+
+/** Whether a project has at least one prize / distinction. */
+export function projectHasAward(project: Project): boolean {
+  return Boolean(project.awards && project.awards.length > 0);
 }
 
 /** Lowercased haystack used for free-text search. */
@@ -54,11 +60,12 @@ export function projectMatchesTags(project: Project, tags: string[]): boolean {
 export function filterProjects(
   projects: Project[],
   language: Language,
-  { query, type, tags }: ProjectFilters,
+  { query, type, tags, awarded }: ProjectFilters,
 ): Project[] {
   const term = query.trim().toLowerCase();
 
   return projects.filter((project) => {
+    if (awarded && !projectHasAward(project)) return false;
     if (type !== 'all' && project.type[language] !== type) return false;
     if (!projectMatchesTags(project, tags)) return false;
     if (term && !projectSearchIndex(project, language).includes(term)) return false;

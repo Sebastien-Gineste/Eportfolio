@@ -36,8 +36,11 @@ export interface Translation {
     greeting: string;
     role: string;
     tagline: string;
+    highlights: string[];
+    focusLabel: string;
     ctaProjects: string;
     ctaContact: string;
+    awardedProjects: string;
   };
   about: {
     seoTitle: string;
@@ -45,6 +48,9 @@ export interface Translation {
     title: string;
     intro: string[];
     journeyTitle: string;
+    educationTitle: string;
+    experienceTitle: string;
+    present: string;
     interestsTitle: string;
   };
   projects: {
@@ -57,6 +63,8 @@ export interface Translation {
     filterTypeLabel: string;
     filterTypeAll: string;
     filterTagsLabel: string;
+    filterAwardedLabel: string;
+    filterAwarded: string;
     showFilters: string;
     hideFilters: string;
     clearFilters: string;
@@ -64,6 +72,7 @@ export interface Translation {
     resultsMany: string;
     viewDetails: string;
     teamLabel: string;
+    awarded: string;
     empty: string;
     paginationPrev: string;
     paginationNext: string;
@@ -75,6 +84,8 @@ export interface Translation {
     skills: string;
     context: string;
     teamLabel: string;
+    awards: string;
+    links: string;
     backToList: string;
     selectPrompt: string;
     close: string;
@@ -106,6 +117,8 @@ export interface JourneyEntry {
   title: LocalizedText;
   description: LocalizedText;
   period: string;
+  /** When true, the entry is ongoing: the period end reads "present". */
+  current?: boolean;
   url?: string;
 }
 
@@ -119,13 +132,22 @@ export interface Interest {
 export interface SkillCategory {
   id: string;
   name: LocalizedText;
-  description: LocalizedText;
+  /** Individual skills / technologies shown as tags within the category. */
+  skills: LocalizedText[];
 }
 
 /** External link attached to a project (repository, live demo, video...). */
 export interface ProjectLink {
   url: string;
   label: LocalizedText;
+}
+
+/** A prize or distinction won by a project, optionally linking to its source. */
+export interface ProjectAward {
+  label: LocalizedText;
+  /** Condensed label used on compact surfaces (project card badge). */
+  short?: LocalizedText;
+  url?: string;
 }
 
 /** A portfolio project or internship. */
@@ -145,7 +167,10 @@ export interface Project {
   skills: string[];
   /** Path in `public/` matching the project slug (e.g. `img/projects/findyourjob.png`). */
   image?: string;
-  link?: ProjectLink;
+  /** External links (repository, live demo, video, press...). */
+  links?: ProjectLink[];
+  /** Prizes and distinctions, highlighted on the card and detail view. */
+  awards?: ProjectAward[];
 }
 
 /** Static profile information reused across pages. */

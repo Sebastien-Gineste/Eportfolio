@@ -14,6 +14,11 @@ interface SectionProps {
    * content. Taller content simply grows past the viewport and aligns to the top.
    */
   fullHeight?: boolean;
+  /**
+   * With `fullHeight`, align content to the top instead of vertically centering
+   * it. Keeps content-heavy sections starting at a consistent vertical offset.
+   */
+  alignTop?: boolean;
   /** Tighter bottom padding (e.g. when content ends with pagination). */
   compactBottom?: boolean;
   /** Extra pixels to scroll above the target (fine-tunes anchor landing). */
@@ -31,6 +36,7 @@ export function Section({
   id,
   ariaLabelledby,
   fullHeight,
+  alignTop,
   compactBottom,
   scrollOffset,
 }: SectionProps) {
@@ -44,7 +50,7 @@ export function Section({
       className={cx(
         'focus:outline-none',
         fullHeight
-          ? 'flex min-h-svh flex-col justify-center py-24'
+          ? cx('flex min-h-svh flex-col py-24', alignTop ? 'justify-start' : 'justify-center')
           : compactBottom
             ? 'pt-12 pb-6 sm:pt-16 sm:pb-8'
             : 'py-12 sm:py-16',

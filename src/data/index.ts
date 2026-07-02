@@ -1,4 +1,4 @@
-import type { Interest, JourneyEntry, Profile, Project, SkillCategory } from '@/types';
+import type { Interest, JourneyEntry, LocalizedText, Profile, Project, SkillCategory } from '@/types';
 
 /**
  * Static portfolio content, kept separate from the UI so pages stay
@@ -15,43 +15,105 @@ export const profile: Profile = {
   },
 };
 
+const skill = (fr: string, en?: string): LocalizedText => ({ fr, en: en ?? fr });
+
 export const skillCategories: SkillCategory[] = [
   {
-    id: 'design',
-    name: { fr: 'Conception', en: 'Design' },
-    description: { fr: 'UML · Design patterns · MCD', en: 'UML · Design patterns · ERD' },
+    id: 'dev',
+    name: { fr: 'Langages & Frameworks', en: 'Languages & Frameworks' },
+    skills: [
+      skill('Scala'),
+      skill('Python'),
+      skill('TypeScript'),
+      skill('Node.js'),
+      skill('Angular'),
+      skill('npm'),
+    ],
   },
   {
-    id: 'project-management',
-    name: { fr: 'Gestion de projet', en: 'Project management' },
-    description: { fr: 'Méthodes agiles · Git · Scrum', en: 'Agile methods · Git · Scrum' },
+    id: 'cloud',
+    name: { fr: 'Cloud & Infrastructure', en: 'Cloud & Infrastructure' },
+    skills: [
+      skill('AWS'),
+      skill('Scaleway'),
+      skill('Kubernetes'),
+      skill('Helm'),
+      skill('Terraform'),
+      skill('Docker'),
+    ],
   },
   {
-    id: 'web',
-    name: { fr: 'Développement web', en: 'Web development' },
-    description: { fr: 'React · Vue.js · Angular', en: 'React · Vue.js · Angular' },
+    id: 'cicd',
+    name: { fr: 'CI/CD & Observabilité', en: 'CI/CD & Observability' },
+    skills: [
+      skill('GitHub Actions'),
+      skill('ArgoCD'),
+      skill('Git'),
+      skill('Grafana'),
+      skill('Loki'),
+      skill('Alloy'),
+    ],
   },
   {
-    id: 'backend',
-    name: { fr: 'Back-end', en: 'Back-end' },
-    description: { fr: 'Node.js · NestJS · Spring Boot', en: 'Node.js · NestJS · Spring Boot' },
-  },
-  {
-    id: 'databases',
+    id: 'data',
     name: { fr: 'Bases de données', en: 'Databases' },
-    description: { fr: 'PostgreSQL · MySQL · MongoDB', en: 'PostgreSQL · MySQL · MongoDB' },
+    skills: [skill('MongoDB'), skill('PostgreSQL'), skill('Elasticsearch')],
   },
   {
-    id: 'devops',
-    name: { fr: 'CI/CD & Cloud', en: 'CI/CD & Cloud' },
-    description: {
-      fr: 'Build · Test · Déploiement · Docker',
-      en: 'Build · Test · Deploy · Docker',
-    },
+    id: 'security',
+    name: { fr: 'Sécurité & Identité', en: 'Security & Identity' },
+    skills: [
+      skill('SSO'),
+      skill('IDP'),
+      skill('MFA'),
+      skill('JWT'),
+      skill('Sécurité', 'Security'),
+    ],
+  },
+  {
+    id: 'ai',
+    name: { fr: 'IA générative', en: 'Generative AI' },
+    skills: [
+      skill('IA générative', 'Generative AI'),
+      skill('Agents IA', 'AI agents'),
+      skill('RAG'),
+      skill('LLM'),
+    ],
+  },
+  {
+    id: 'architecture',
+    name: { fr: 'Architecture & bonnes pratiques', en: 'Architecture & best practices' },
+    skills: [
+      skill('DDD'),
+      skill('Architecture hexagonale', 'Hexagonal architecture'),
+      skill('Clean code'),
+      skill('Event-driven'),
+    ],
+  },
+  {
+    id: 'tests',
+    name: { fr: 'Tests & Qualité', en: 'Testing & Quality' },
+    skills: [
+      skill('Tests unitaires', 'Unit testing'),
+      skill('Tests end-to-end', 'End-to-end testing'),
+      skill('Tests de contrat', 'Contract testing'),
+      skill('TDD'),
+    ],
+  },
+  {
+    id: 'methods',
+    name: { fr: 'Méthodes & Collaboration', en: 'Methods & Collaboration' },
+    skills: [
+      skill('Agile'),
+      skill('Scrum'),
+      skill('Gestion de projet', 'Project management'),
+      skill('Roadmap'),
+      skill('Document de design', 'Design document'),
+    ],
   },
 ];
 
-export const journey: JourneyEntry[] = [
+export const education: JourneyEntry[] = [
   {
     id: 'iut',
     period: '2018 – 2020',
@@ -71,11 +133,28 @@ export const journey: JourneyEntry[] = [
     },
     url: 'https://www.polytech.umontpellier.fr/',
   },
+];
+
+export const experience: JourneyEntry[] = [
+  {
+    id: 'chu-montpellier',
+    period: '2025',
+    current: true,
+    title: { fr: 'Ingénieur logiciel — CHU de Montpellier', en: 'Software Engineer — Montpellier University Hospital' },
+    description: {
+      fr: 'Conception et exploitation d’applications d’IA pour les professionnels de santé, avec un fort accent sur la fiabilité, la sécurité et l’intégration au système d’information hospitalier.',
+      en: 'Design and operation of AI-powered applications for healthcare professionals, with a strong focus on reliability, security and integration with the hospital information system.',
+    },
+    url: 'https://www.chu-montpellier.fr/',
+  },
   {
     id: 'teads',
-    period: '2023 – …',
-    title: { fr: 'Ingénieur logiciel', en: 'Software engineer' },
-    description: { fr: 'Teads.', en: 'Teads.' },
+    period: '2023 – 2025',
+    title: { fr: 'Ingénieur logiciel — Teads', en: 'Software Engineer — Teads' },
+    description: {
+      fr: 'Architecture d’une plateforme backend orientée domaine (Scala, gRPC) : décomposition d’un monolithe, migrations de systèmes distribués (Kafka, Elasticsearch) et standardisation de l’authentification entre équipes.',
+      en: 'Architecture of a domain-oriented backend platform (Scala, gRPC): monolith decomposition, distributed-systems migrations (Kafka, Elasticsearch) and cross-team authentication standardization.',
+    },
     url: 'https://www.teads.com/',
   },
 ];
@@ -118,7 +197,7 @@ export const projects: Project[] = [
       en: 'Serious virtual-reality game, awarded at the GALA conference.',
     },
     description: {
-      fr: 'Projet réalisé durant mon stage à Ulster University (Irlande du Nord). Jeu sérieux VR pour améliorer le calcul mental et la formation de mots. J’ai conçu le gameplay et les animations de la partie « mots ». Le jeu est disponible sur Steam et a remporté le premier prix de sa catégorie (« Student ») à la conférence GALA en Finlande.',
+      fr: 'Projet réalisé durant mon stage à Ulster University (Irlande du Nord). Jeu sérieux VR pour améliorer le calcul mental et la formation de mots. J’ai conçu le gameplay et les animations de la partie « Letters ». Le jeu est disponible sur Steam et a remporté le premier prix de sa catégorie (« Student ») à la conférence GALA en Finlande.',
       en: 'Built during my internship at Ulster University (Northern Ireland). Serious VR game improving mental calculation and word building. I designed the gameplay and animation sequences for the "words" part. The game is available on Steam and won first prize in the "Student" category at the GALA conference in Finland.',
     },
     context: {
@@ -129,10 +208,26 @@ export const projects: Project[] = [
     technologies: ['Unity3D', 'C#', 'VR'],
     skills: ['VR', 'Unity3D', 'C#', 'Project management'],
     image: 'img/projects/numbers-and-letters.png',
-    link: {
-      url: 'https://store.steampowered.com/app/869400/Numbers__Letters/',
-      label: { fr: 'Voir sur Steam', en: 'View on Steam' },
-    },
+    links: [
+      {
+        url: 'https://store.steampowered.com/app/869400/Numbers__Letters/',
+        label: { fr: 'Voir sur Steam', en: 'View on Steam' },
+      },
+      {
+        url: 'https://numbersandletters.games/credits',
+        label: { fr: 'Crédits du jeu', en: 'Game credits' },
+      },
+    ],
+    awards: [
+      {
+        label: {
+          fr: '1er prix — catégorie « Student », GALA 2022 Serious Games Competition',
+          en: '1st prize — "Student" category, GALA 2022 Serious Games Competition',
+        },
+        short: { fr: '1er prix — GALA 2022', en: '1st prize — GALA 2022' },
+        url: 'https://conf.seriousgamessociety.org/gala-2022-serious-games-competition/',
+      },
+    ],
   },
   {
     slug: 'math-ar',
@@ -154,10 +249,26 @@ export const projects: Project[] = [
     technologies: ['Unity3D', 'C#', 'AR'],
     skills: ['AR', 'Unity3D', 'C#', 'Niantic LightShip ARDK 2.0'],
     image: 'img/projects/math-ar.png',
-    link: {
-      url: 'https://www.youtube.com/watch?v=yDg1uSqECLI',
-      label: { fr: 'Vidéo de présentation', en: 'Presentation video' },
-    },
+    links: [
+      {
+        url: 'https://www.youtube.com/watch?v=yDg1uSqECLI',
+        label: { fr: 'Vidéo de présentation', en: 'Presentation video' },
+      },
+      {
+        url: 'https://lenslist.co/mathar',
+        label: { fr: 'Description du projet', en: 'Project description' },
+      },
+    ],
+    awards: [
+      {
+        label: {
+          fr: 'Honorable Mention & prix — Lenslist × Niantic Lightship Templates Challenge',
+          en: 'Honorable Mention & prize — Lenslist × Niantic Lightship Templates Challenge',
+        },
+        short: { fr: 'Prix — Niantic × Lenslist', en: 'Prize — Niantic × Lenslist' },
+        url: 'https://blog.lenslist.co/2022/08/11/winners-announcement-templates-challenge-explore-the-real-world-metaverse/',
+      },
+    ],
   },
   {
     slug: 'findyourjob',
@@ -202,10 +313,12 @@ export const projects: Project[] = [
     teamSize: 2,
     technologies: ['Swift', 'SwiftUI', 'Firebase', 'MVI'],
     skills: ['Swift', 'SwiftUI', 'Firebase', 'MVI', 'Scrum'],
-    link: {
-      url: 'https://github.com/Sebastien-Gineste/ProjetAWI-IOS',
-      label: { fr: 'Voir sur GitHub', en: 'View on GitHub' },
-    },
+    links: [
+      {
+        url: 'https://github.com/Sebastien-Gineste/ProjetAWI-IOS',
+        label: { fr: 'Voir sur GitHub', en: 'View on GitHub' },
+      },
+    ],
   },
   {
     slug: 'recipe-management-web',
@@ -389,10 +502,12 @@ export const projects: Project[] = [
     technologies: ['Java', 'MinMax'],
     skills: ['Java', 'MinMax algorithm'],
     image: 'img/projects/conquest-project.png',
-    link: {
-      url: 'https://github.com/IUTInfoMontProjetProgS3/ProjetConquest',
-      label: { fr: 'Consignes du projet', en: 'Project instructions' },
-    },
+    links: [
+      {
+        url: 'https://github.com/IUTInfoMontProjetProgS3/ProjetConquest',
+        label: { fr: 'Consignes du projet', en: 'Project instructions' },
+      },
+    ],
   },
   {
     slug: 'e-commerce',
@@ -456,9 +571,11 @@ export const projects: Project[] = [
     technologies: ['Java'],
     skills: ['Java'],
     image: 'img/projects/dominion-game.png',
-    link: {
-      url: 'https://dominion.games/',
-      label: { fr: 'Aperçu du jeu de référence', en: 'Reference game overview' },
-    },
+    links: [
+      {
+        url: 'https://dominion.games/',
+        label: { fr: 'Aperçu du jeu de référence', en: 'Reference game overview' },
+      },
+    ],
   },
 ];

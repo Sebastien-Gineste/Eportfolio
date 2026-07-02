@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useI18n } from '@/i18n/context';
 import { projects } from '@/data';
 import { cx } from '@/utils';
@@ -38,6 +39,18 @@ function FilterIcon() {
   );
 }
 
+function TrophyIcon() {
+  return (
+    <svg aria-hidden="true" className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M8 4h8v4a4 4 0 0 1-8 0V4Zm0 2H5v1a3 3 0 0 0 3 3m8-4h3v1a3 3 0 0 1-3 3m-4 4v3m-3 3h6m-5 0 .5-3h3l.5 3"
+      />
+    </svg>
+  );
+}
+
 function SelectChevron() {
   return (
     <svg
@@ -63,20 +76,32 @@ interface ProjectExplorerProps {
 /** Search, type/tag filters and paginated project results. */
 export function ProjectExplorer({ selectedSlug }: ProjectExplorerProps) {
   const { language, t } = useI18n();
+  const [searchParams] = useSearchParams();
+  const awardedParam = searchParams.get('awarded') === '1';
 
   const [query, setQuery] = useState('');
   const [type, setType] = useState('all');
   const [tags, setTags] = useState<string[]>([]);
+  const [awarded, setAwarded] = useState(awardedParam);
   const [page, setPage] = useState(1);
-  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(awardedParam);
   const [previousSelectedSlug, setPreviousSelectedSlug] = useState(selectedSlug);
+
+  // React to the `?awarded=1` deep link (e.g. the hero "awarded projects" link).
+  useEffect(() => {
+    if (awardedParam) {
+      setAwarded(true);
+      setFiltersOpen(true);
+      setPage(1);
+    }
+  }, [awardedParam]);
 
   const typeOptions = useMemo(() => getProjectTypes(projects, language), [language]);
   const tagOptions = useMemo(() => getProjectTags(projects), []);
 
   const filtered = useMemo(
-    () => filterProjects(projects, language, { query, type, tags }),
-    [language, query, type, tags],
+    () => filterProjects(projects, language, { query, type, tags, awarded }),
+    [language, query, type, tags, awarded],
   );
 
   if (selectedSlug !== previousSelectedSlug) {
@@ -100,7 +125,7 @@ export function ProjectExplorer({ selectedSlug }: ProjectExplorerProps) {
     return [...pageItems, ...Array.from({ length: placeholders }, () => null)];
   }, [pageItems]);
 
-  const activeFilterCount = (type !== 'all' ? 1 : 0) + tags.length;
+  const activeFilterCount = (type !== 'all' ? 1 : 0) + tags.length + (awarded ? 1 : 0);
   const hasSecondaryFilters = activeFilterCount > 0;
   const hasActiveFilters = query.trim() !== '' || hasSecondaryFilters;
 
@@ -108,13 +133,20 @@ export function ProjectExplorer({ selectedSlug }: ProjectExplorerProps) {
     setQuery('');
     setType('all');
     setTags([]);
+    setAwarded(false);
     setPage(1);
   };
 
   const clearSecondaryFilters = () => {
     setType('all');
     setTags([]);
+    setAwarded(false);
     setPage(1);
+  };
+
+  const toggleAwarded = () => {
+    setPage(1);
+    setAwarded((current) => !current);
   };
 
   const toggleTag = (tag: string) => {
@@ -192,6 +224,42 @@ export function ProjectExplorer({ selectedSlug }: ProjectExplorerProps) {
             )}
           >
             <div className="mt-4 space-y-4 border-t border-border pt-4">
+              <button
+                type="button"
+                role="switch"
+                aria-checked={awarded}
+                tabIndex={filtersOpen ? 0 : -1}
+                onClick={toggleAwarded}
+                className={cx(
+                  'flex w-full items-center justify-between gap-3 rounded-lg border px-3 py-2.5 text-left transition-colors',
+                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                  awarded
+                    ? 'border-amber-400/50 bg-amber-400/10'
+                    : 'border-border bg-background hover:border-primary/40',
+                )}
+              >
+                <span className="flex items-center gap-2 text-sm font-medium">
+                  <span className={cx(awarded ? 'text-amber-500' : 'text-muted-foreground')}>
+                    <TrophyIcon />
+                  </span>
+                  {t.projects.filterAwarded}
+                </span>
+                <span
+                  aria-hidden="true"
+                  className={cx(
+                    'relative h-5 w-9 shrink-0 rounded-full transition-colors',
+                    awarded ? 'bg-amber-500' : 'bg-border',
+                  )}
+                >
+                  <span
+                    className={cx(
+                      'absolute top-0.5 left-0.5 size-4 rounded-full bg-white transition-transform',
+                      awarded && 'translate-x-4',
+                    )}
+                  />
+                </span>
+              </button>
+
               <div className="sm:max-w-xs">
                 <label
                   htmlFor="project-type"
@@ -299,6 +367,7 @@ export function ProjectExplorer({ selectedSlug }: ProjectExplorerProps) {
                   language={language}
                   viewDetailsLabel={t.projects.viewDetails}
                   teamLabel={t.projects.teamLabel}
+                  awardedLabel={t.projects.awarded}
                   isSelected={project.slug === selectedSlug}
                 />
               ) : (

@@ -9,6 +9,25 @@ interface ProjectDetailProps {
   titleId?: string;
 }
 
+function TrophyIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="mt-0.5 size-5 shrink-0 text-amber-500"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M8 4h8v4a4 4 0 0 1-8 0V4Zm0 2H5v1a3 3 0 0 0 3 3m8-4h3v1a3 3 0 0 1-3 3m-4 4v3m-3 3h6m-5 0 .5-3h3l.5 3"
+      />
+    </svg>
+  );
+}
+
 /** Full project detail content. */
 export function ProjectDetail({ project, className, titleId }: ProjectDetailProps) {
   const { language, t } = useI18n();
@@ -23,6 +42,31 @@ export function ProjectDetail({ project, className, titleId }: ProjectDetailProp
       <h1 id={titleId} className="mt-4 text-2xl font-bold tracking-tight sm:text-3xl">
         {project.title[language]}
       </h1>
+
+      {project.awards && project.awards.length > 0 && (
+        <ul className="mt-4 space-y-2">
+          {project.awards.map((award) => (
+            <li
+              key={award.label.en}
+              className="flex items-start gap-2.5 rounded-lg border border-amber-400/40 bg-amber-400/10 p-3"
+            >
+              <TrophyIcon />
+              {award.url ? (
+                <a
+                  href={award.url}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="text-sm font-medium underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  {award.label[language]} ↗
+                </a>
+              ) : (
+                <span className="text-sm font-medium">{award.label[language]}</span>
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
 
       {project.image && (
         <ProjectImage
@@ -74,16 +118,25 @@ export function ProjectDetail({ project, className, titleId }: ProjectDetailProp
         </div>
       </dl>
 
-      {project.link && (
+      {project.links && project.links.length > 0 && (
         <div className="mt-6">
-          <a
-            href={project.link.url}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="inline-flex items-center gap-1 rounded-md font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-          >
-            {project.link.label[language]} ↗
-          </a>
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+            {t.projectDetails.links}
+          </h2>
+          <ul className="mt-2 flex flex-wrap gap-x-5 gap-y-2">
+            {project.links.map((link) => (
+              <li key={link.url}>
+                <a
+                  href={link.url}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="inline-flex items-center gap-1 rounded-md font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  {link.label[language]} ↗
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </article>
