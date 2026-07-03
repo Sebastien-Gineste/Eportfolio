@@ -22,8 +22,9 @@ export const en: Translation = {
     label: 'Change language',
   },
   home: {
-    seoTitle: 'Home',
-    seoDescription: 'Portfolio of Sébastien Gineste, software engineer.',
+    seoTitle: 'Software engineer | Healthcare AI, cloud & distributed systems',
+    seoDescription:
+      'Software engineer in Montpellier — secure platforms for critical healthcare AI, distributed systems, Kubernetes and observability. Portfolio and projects.',
     greeting: 'Hi, I’m',
     role: 'Software engineer',
     tagline:

@@ -177,7 +177,6 @@ export interface Project {
 export interface Profile {
   name: string;
   location: string;
-  email: string;
   links: {
     github: string;
     linkedin: string;

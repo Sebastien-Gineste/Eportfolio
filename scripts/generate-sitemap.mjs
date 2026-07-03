@@ -32,11 +32,13 @@ function buildSitemap() {
 
       const xDefault = alternates.fr ?? route;
       const xDefaultLink = `    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(`${SITE_URL}${xDefault}`)}" />`;
+      const lastmod = new Date().toISOString().split('T')[0];
 
       return `  <url>
     <loc>${escapeXml(loc)}</loc>
 ${alternateLinks}
 ${xDefaultLink}
+    <lastmod>${lastmod}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>${route.includes('/projects/') ? '0.7' : '1.0'}</priority>
   </url>`;

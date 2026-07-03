@@ -5,9 +5,8 @@ import { projects } from '@/data';
 import { localizedPath, scrollToSection } from '@/utils';
 import { findProjectBySlug } from '@/utils/projects';
 import {
-  buildPersonSchema,
-  buildProjectSchema,
-  buildWebSiteSchema,
+  buildHomePageSchemas,
+  buildProjectPageSchemas,
 } from '@/utils/structuredData';
 import { Seo } from '@/components/Seo/Seo';
 import { HeroSection } from '@/components/sections/HeroSection';
@@ -55,8 +54,8 @@ export function Landing() {
   const jsonLd = useMemo(
     () =>
       project
-        ? buildProjectSchema(project, language)
-        : [buildPersonSchema(language), buildWebSiteSchema(language)],
+        ? buildProjectPageSchemas(project, language)
+        : buildHomePageSchemas(language),
     [project, language],
   );
 

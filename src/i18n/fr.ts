@@ -22,8 +22,9 @@ export const fr: Translation = {
     label: 'Changer de langue',
   },
   home: {
-    seoTitle: 'Accueil',
-    seoDescription: 'Portfolio de Sébastien Gineste, ingénieur logiciel.',
+    seoTitle: 'Ingénieur logiciel | IA santé, cloud & systèmes distribués',
+    seoDescription:
+      'Ingénieur logiciel à Montpellier — plateformes sécurisées pour l’IA critique en santé, systèmes distribués, Kubernetes et observabilité. Portfolio et projets.',
     greeting: 'Bonjour, je suis',
     role: 'Ingénieur logiciel',
     tagline:

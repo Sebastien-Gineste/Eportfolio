@@ -1,27 +1,42 @@
-import { experience, profile } from '@/data';
-import { SITE_ORIGIN, absoluteUrl } from '@/config/site';
+import { experience, profile, skillCategories } from '@/data';
+import { absoluteUrl } from '@/config/site';
 import type { Language, Project } from '@/types';
 import { localizedPath, publicAsset } from '@/utils';
+
+const SITE_ORIGIN = 'https://sebastien-gineste.github.io';
 
 function absolutePublicUrl(publicPath: string): string {
   return `${SITE_ORIGIN}${publicAsset(publicPath)}`;
 }
 
-/** Schema.org Person for the portfolio owner. */
-export function buildPersonSchema(language: Language) {
-  const role = language === 'fr' ? 'Ingénieur logiciel' : 'Software engineer';
+function personRole(language: Language): string {
+  return language === 'fr' ? 'Ingénieur logiciel' : 'Software engineer';
+}
+
+/** Distinct skills used for Schema.org `knowsAbout`. */
+function knowsAboutSkills(language: Language): string[] {
+  const skills = new Set<string>();
+  for (const category of skillCategories) {
+    for (const skill of category.skills) {
+      skills.add(skill[language]);
+    }
+  }
+  return [...skills];
+}
+
+function buildPersonEntity(language: Language) {
+  const role = personRole(language);
 
   return {
-    '@context': 'https://schema.org',
     '@type': 'Person',
     name: profile.name,
     jobTitle: role,
-    email: profile.email,
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Montpellier',
       addressCountry: 'FR',
     },
+    knowsAbout: knowsAboutSkills(language),
     sameAs: [profile.links.github, profile.links.linkedin],
     url: absoluteUrl(localizedPath(language)),
     worksFor: experience[0]
@@ -30,6 +45,26 @@ export function buildPersonSchema(language: Language) {
           name: experience[0].title[language].split('—').pop()?.trim() ?? undefined,
         }
       : undefined,
+  };
+}
+
+/** Schema.org ProfilePage wrapping the portfolio owner (home page). */
+export function buildProfilePageSchema(language: Language) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    name: profile.name,
+    url: absoluteUrl(localizedPath(language)),
+    inLanguage: language,
+    mainEntity: buildPersonEntity(language),
+  };
+}
+
+/** Schema.org Person for the portfolio owner. */
+export function buildPersonSchema(language: Language) {
+  return {
+    '@context': 'https://schema.org',
+    ...buildPersonEntity(language),
   };
 }
 
@@ -45,6 +80,42 @@ export function buildWebSiteSchema(language: Language) {
       '@type': 'Person',
       name: profile.name,
     },
+  };
+}
+
+/** JSON-LD bundle for the localized home page. */
+export function buildHomePageSchemas(language: Language) {
+  return [buildProfilePageSchema(language), buildWebSiteSchema(language)];
+}
+
+/** Schema.org BreadcrumbList for a project detail page. */
+export function buildProjectBreadcrumbSchema(project: Project, language: Language) {
+  const homeLabel = language === 'fr' ? 'Accueil' : 'Home';
+  const projectsLabel = language === 'fr' ? 'Projets' : 'Projects';
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: homeLabel,
+        item: absoluteUrl(localizedPath(language)),
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: projectsLabel,
+        item: `${absoluteUrl(localizedPath(language))}#projects`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: project.title[language],
+        item: absoluteUrl(localizedPath(language, `projects/${project.slug}`)),
+      },
+    ],
   };
 }
 
@@ -72,4 +143,12 @@ export function buildProjectSchema(project: Project, language: Language) {
   }
 
   return schema;
+}
+
+/** JSON-LD bundle for a project detail page. */
+export function buildProjectPageSchemas(project: Project, language: Language) {
+  return [
+    buildProjectSchema(project, language),
+    buildProjectBreadcrumbSchema(project, language),
+  ];
 }

@@ -8,7 +8,6 @@ import type { Interest, JourneyEntry, LocalizedText, Profile, Project, SkillCate
 export const profile: Profile = {
   name: 'Sébastien Gineste',
   location: 'Montpellier, France',
-  email: 'contact@example.com',
   links: {
     github: 'https://github.com/Sebastien-Gineste',
     linkedin: 'https://www.linkedin.com/in/s%C3%A9bastien-gineste/',
