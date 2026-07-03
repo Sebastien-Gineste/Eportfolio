@@ -30,7 +30,9 @@ npm run preview  # preview the production build locally
 | Script                 | Description                                     |
 | ---------------------- | ----------------------------------------------- |
 | `npm run dev`          | Start the Vite dev server with HMR.             |
-| `npm run build`        | Type-check (`tsc -b`) then build to `dist/`.    |
+| `npm run build`        | Type-check, build, sitemap and pre-render to `dist/`. |
+| `npm run sitemap`      | Generate `dist/sitemap.xml` and update `robots.txt`. |
+| `npm run prerender`    | Pre-render localized routes into static HTML (requires a prior `vite build`). |
 | `npm run preview`      | Serve the production build locally.             |
 | `npm run lint`         | Run ESLint over the project.                    |
 | `npm run lint:fix`     | Run ESLint and auto-fix what it can.            |
@@ -114,8 +116,10 @@ content lives in `src/data` and translatable UI strings live in `src/i18n`.
 
 ## SEO
 
-- The `Seo` component sets `document.title`, meta description, Open Graph tags
-  and the `<html lang>` attribute per page.
+- **Pre-rendered HTML** at build time: each localized route (`/fr`, `/en`, project deep links) gets a full `index.html` with content, meta tags and JSON-LD already in the document — visible to search engines and social scrapers (LinkedIn, Twitter/X, etc.) without executing JavaScript.
+- The `Seo` component manages per-page metadata on client navigations: title, description, canonical URL, Open Graph, Twitter cards, `hreflang` alternates and Schema.org JSON-LD (`Person`, `WebSite`, `CreativeWork`).
+- `index.html` ships rich fallback meta tags for the default French landing page.
+- `scripts/generate-sitemap.mjs` writes `dist/sitemap.xml` with `hreflang` alternates; `public/robots.txt` references the sitemap.
 
 ## Accessibility
 

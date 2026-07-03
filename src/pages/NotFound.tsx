@@ -8,7 +8,7 @@ export function NotFound() {
 
   return (
     <>
-      <Seo title={t.notFound.seoTitle} description={t.notFound.body} />
+      <Seo title={t.notFound.seoTitle} description={t.notFound.body} noindex />
       <Section className="py-20 sm:py-28">
         <p className="text-sm font-semibold uppercase tracking-wide text-primary">404</p>
         <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">{t.notFound.title}</h1>
