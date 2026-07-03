@@ -168,6 +168,30 @@ export const interests: Interest[] = [
 
 export const projects: Project[] = [
   {
+    slug: 'cloud-storage-audit-tool',
+    title: {
+      fr: 'Application web — Cloud Storage Audit Tool',
+      en: 'Web application — Cloud Storage Audit Tool',
+    },
+    type: { fr: 'Projet industriel', en: 'Industrial project' },
+    summary: {
+      fr: 'Audit du coût environnemental des données stockées sur un drive et politiques de suppression.',
+      en: 'Auditing the environmental cost of data stored on a drive and running deletion policies.',
+    },
+    description: {
+      fr: 'Projet de fin d’études (PFE) réalisé pour CGI dans le cadre du RGESN (Référentiel général d’écoconception de services numériques), visant à réduire la consommation de ressources informatiques et énergétiques et la contribution à l’obsolescence des équipements. L’application permet d’ajouter des drives des fournisseurs Google Drive et OneDrive via OAuth 2. Un audit de ces drives est réalisé à un intervalle défini par l’utilisateur : il mesure l’impact environnemental et énergétique des fichiers et identifie les doublons afin d’économiser de l’espace. L’utilisateur peut définir des politiques de suppression selon le type de données et leur date de dernière modification ; ces politiques permettent de supprimer ou de rendre obsolètes les fichiers qui ne les respectent pas. La consommation du drive peut être visualisée dans le temps. Architecture en microservices dockerisés.',
+      en: 'Final-year project (PFE) carried out for CGI as part of the RGESN (General Reference for the Ecodesign of Digital Services), which aims to reduce the consumption of IT and energy resources and the contribution to equipment obsolescence. The application lets you add drives from Google Drive and OneDrive providers via OAuth 2. An audit of these drives is performed at a user-defined interval: it measures the environmental and energy impact of files and identifies duplicate files to save space. Users can define deletion policies based on data type and last modification date; these policies allow non-compliant files to be deleted or made obsolete. Drive consumption can be visualised over time. Dockerised microservices architecture.',
+    },
+    context: {
+      fr: '02/2023 · 2 mois · CGI · France',
+      en: '02/2023 · 2 months · CGI · France',
+    },
+    teamSize: 2,
+    technologies: ['HTML/CSS','NestJS', 'Angular', 'RabbitMQ', 'PostgreSQL', 'MongoDB', 'Redis', 'Docker'],
+    skills: ['Microservices', 'OAuth 2', 'Docker', 'PostgreSQL', 'MongoDB', 'Ecodesign'],
+    image: 'img/projects/co2-bot.png',
+  },
+  {
     slug: 'polyconquest',
     title: { fr: 'Application web — PolyConquest', en: 'Web application — PolyConquest' },
     type: { fr: 'Projet industriel', en: 'Industrial project' },
