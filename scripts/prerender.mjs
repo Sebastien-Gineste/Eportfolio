@@ -1,13 +1,16 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { spawn } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import puppeteer from 'puppeteer';
 import { getPrerenderRoutes } from './routes.mjs';
 
 const BASE_PATH = process.env.BASE_PATH ?? '/';
 const DIST_DIR = 'dist';
 const PREVIEW_PORT = Number(process.env.PREVIEW_PORT ?? 4173);
+const PREVIEW_READY_TIMEOUT_MS = Number(process.env.PREVIEW_READY_TIMEOUT_MS ?? 60_000);
 const SITE_URL = 'https://sebastien-gineste.github.io/Eportfolio';
+const VITE_BIN = join(fileURLToPath(new URL('..', import.meta.url)), 'node_modules', 'vite', 'bin', 'vite.js');
 
 function normalizeBasePath(basePath) {
   if (!basePath || basePath === '/') return '/';
@@ -28,54 +31,60 @@ function routeToUrl(route, origin) {
   return `${origin}${base}${suffix}`;
 }
 
-async function waitForPreviewReady(previewProcess) {
-  return new Promise((resolve, reject) => {
-    const timeout = setTimeout(() => {
-      reject(new Error(`Timed out waiting for vite preview on port ${PREVIEW_PORT}`));
-    }, 30_000);
+function previewHealthUrl(origin) {
+  return `${origin}${normalizeBasePath(BASE_PATH)}`;
+}
 
-    const onData = (chunk) => {
-      const text = chunk.toString();
-      if (text.includes(`http://localhost:${PREVIEW_PORT}`)) {
-        clearTimeout(timeout);
-        previewProcess.stdout?.off('data', onData);
-        previewProcess.stderr?.off('data', onData);
-        resolve();
-      }
-    };
+function pipePreviewLogs(previewProcess) {
+  const log = (stream) => {
+    stream?.on('data', (chunk) => process.stderr.write(chunk));
+  };
+  log(previewProcess.stdout);
+  log(previewProcess.stderr);
+}
 
-    previewProcess.stdout?.on('data', onData);
-    previewProcess.stderr?.on('data', onData);
-    previewProcess.on('error', (error) => {
-      clearTimeout(timeout);
-      reject(error);
-    });
-    previewProcess.on('exit', (code) => {
-      if (code !== null && code !== 0) {
-        clearTimeout(timeout);
-        reject(new Error(`vite preview exited with code ${code}`));
+async function waitForPreviewReady(healthUrl, previewProcess) {
+  const started = Date.now();
+
+  while (Date.now() - started < PREVIEW_READY_TIMEOUT_MS) {
+    if (previewProcess.exitCode !== null) {
+      throw new Error(`vite preview exited with code ${previewProcess.exitCode}`);
+    }
+
+    try {
+      const response = await fetch(healthUrl, { redirect: 'follow' });
+      if (response.ok) {
+        return;
       }
-    });
-  });
+    } catch {
+      // Preview is still starting.
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 250));
+  }
+
+  throw new Error(`Timed out waiting for vite preview at ${healthUrl}`);
 }
 
 function startPreview() {
-  return spawn(
-    process.platform === 'win32' ? 'npx.cmd' : 'npx',
-    ['vite', 'preview', '--port', String(PREVIEW_PORT), '--strictPort'],
-    {
-      env: { ...process.env, BASE_PATH },
-      stdio: ['ignore', 'pipe', 'pipe'],
-    },
-  );
+  return spawn(process.execPath, [VITE_BIN, 'preview', '--port', String(PREVIEW_PORT), '--strictPort'], {
+    env: { ...process.env, BASE_PATH },
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
 }
 
 async function prerender() {
-  const base = normalizeBasePath(BASE_PATH);
   const origin = `http://localhost:${PREVIEW_PORT}`;
+  const healthUrl = previewHealthUrl(origin);
   const preview = startPreview();
+  pipePreviewLogs(preview);
 
-  await waitForPreviewReady(preview);
+  try {
+    await waitForPreviewReady(healthUrl, preview);
+  } catch (error) {
+    preview.kill('SIGTERM');
+    throw error;
+  }
 
   const browser = await puppeteer.launch({
     headless: true,
