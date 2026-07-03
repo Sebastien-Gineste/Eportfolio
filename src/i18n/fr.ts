@@ -22,7 +22,7 @@ export const fr: Translation = {
     label: 'Changer de langue',
   },
   home: {
-    seoTitle: 'Ingénieur logiciel | IA santé, cloud & systèmes distribués',
+    seoTitle: 'Ingénieur logiciel — Architecte de plateformes IA en santé',
     seoDescription:
       'Conception de systèmes d’IA de production en environnements de santé fortement réglementés. Je conçois et opère des plateformes sécurisées et scalables pour des applications d’IA critiques, de l’infrastructure à la production.',
     greeting: 'Bonjour, je suis',

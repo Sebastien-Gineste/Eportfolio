@@ -22,7 +22,7 @@ export const en: Translation = {
     label: 'Change language',
   },
   home: {
-    seoTitle: 'Software engineer | Healthcare AI, cloud & distributed systems',
+    seoTitle: 'Software engineer — Healthcare AI platform architect',
     seoDescription:
       'Building production-grade AI systems in highly regulated healthcare environments. I design and operate secure, scalable platforms enabling critical AI applications, from infrastructure to production.',
     greeting: 'Hi, I’m',
