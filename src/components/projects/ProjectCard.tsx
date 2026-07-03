@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import type { Language, Project } from '@/types';
 import { Badge, ButtonLink, ProjectImage, TrophyIcon } from '@/components/ui';
 import { cx, localizedPath } from '@/utils';
@@ -35,12 +36,21 @@ export function ProjectCard({
       )}
     >
       {project.image && (
-        <ProjectImage
-          src={project.image}
-          alt={project.title}
-          language={language}
-          className="aspect-16/10 w-full shrink-0 sm:w-36"
-        />
+        <Link
+          to={to}
+          state={{ skipProjectScroll: true }}
+          preventScrollReset
+          viewTransition
+          aria-label={`${viewDetailsLabel} — ${title}`}
+          className="shrink-0 cursor-pointer transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        >
+          <ProjectImage
+            src={project.image}
+            alt={project.title}
+            language={language}
+            className="aspect-16/10 w-full sm:w-36"
+          />
+        </Link>
       )}
 
       <div className="min-w-0 flex-1">

@@ -20,10 +20,14 @@ const inputClasses =
   'h-10 w-full rounded-lg border border-border bg-background px-3 text-sm text-foreground ' +
   'placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary';
 
-/** Native selects need a custom chevron — `appearance-none` hides the broken default one. */
-const selectClasses =
-  'h-10 w-full appearance-none rounded-lg border border-border bg-background py-2 pl-3 pr-10 ' +
-  'text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary';
+const filterBadgeClasses = (active: boolean) =>
+  cx(
+    'cursor-pointer rounded-full border px-3 py-1 text-xs font-medium transition-colors',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+    active
+      ? 'border-primary bg-primary text-primary-foreground'
+      : 'border-border bg-background text-muted-foreground hover:border-primary/40 hover:text-foreground',
+  );
 
 function FilterIcon() {
   return (
@@ -36,23 +40,6 @@ function FilterIcon() {
       className="h-5 w-5"
     >
       <path d="M3 5h14M6 10h8M9 15h2" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function SelectChevron() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-      className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
-    >
-      <path
-        fillRule="evenodd"
-        d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
-        clipRule="evenodd"
-      />
     </svg>
   );
 }
@@ -148,6 +135,11 @@ export function ProjectExplorer({ selectedSlug }: ProjectExplorerProps) {
     );
   };
 
+  const selectType = (value: string) => {
+    setPage(1);
+    setType(value);
+  };
+
   const resultsLabel =
     filtered.length === 1
       ? t.projects.resultsOne
@@ -182,7 +174,7 @@ export function ProjectExplorer({ selectedSlug }: ProjectExplorerProps) {
             aria-label={filtersOpen ? t.projects.hideFilters : t.projects.showFilters}
             onClick={() => setFiltersOpen((open) => !open)}
             className={cx(
-              'relative inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border transition-[colors,transform] duration-200',
+              'relative inline-flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-lg border transition-[colors,transform] duration-200',
               'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background',
               filtersOpen && 'scale-105',
               filtersOpen || hasSecondaryFilters
@@ -223,7 +215,7 @@ export function ProjectExplorer({ selectedSlug }: ProjectExplorerProps) {
                 tabIndex={filtersOpen ? 0 : -1}
                 onClick={toggleAwarded}
                 className={cx(
-                  'flex w-full items-center justify-between gap-3 rounded-lg border px-3 py-2.5 text-left transition-colors',
+                  'flex w-full cursor-pointer items-center justify-between gap-3 rounded-lg border px-3 py-2.5 text-left transition-colors',
                   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
                   awarded
                     ? 'border-amber-400/50 bg-amber-400/10'
@@ -252,32 +244,32 @@ export function ProjectExplorer({ selectedSlug }: ProjectExplorerProps) {
                 </span>
               </button>
 
-              <div className="sm:max-w-xs">
-                <label
-                  htmlFor="project-type"
-                  className="mb-1.5 block text-xs font-medium text-muted-foreground"
-                >
+              <div>
+                <p className="mb-2 text-xs font-medium text-muted-foreground">
                   {t.projects.filterTypeLabel}
-                </label>
-                <div className="relative">
-                  <select
-                    id="project-type"
-                    value={type}
-                    onChange={(event) => {
-                      setPage(1);
-                      setType(event.target.value);
-                    }}
-                    className={selectClasses}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    aria-pressed={type === 'all'}
                     tabIndex={filtersOpen ? 0 : -1}
+                    onClick={() => selectType('all')}
+                    className={filterBadgeClasses(type === 'all')}
                   >
-                    <option value="all">{t.projects.filterTypeAll}</option>
-                    {typeOptions.map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                  <SelectChevron />
+                    {t.projects.filterTypeAll}
+                  </button>
+                  {typeOptions.map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      aria-pressed={type === option}
+                      tabIndex={filtersOpen ? 0 : -1}
+                      onClick={() => selectType(option)}
+                      className={filterBadgeClasses(type === option)}
+                    >
+                      {option}
+                    </button>
+                  ))}
                 </div>
               </div>
 
@@ -295,13 +287,7 @@ export function ProjectExplorer({ selectedSlug }: ProjectExplorerProps) {
                         aria-pressed={active}
                         tabIndex={filtersOpen ? 0 : -1}
                         onClick={() => toggleTag(tag)}
-                        className={cx(
-                          'rounded-full border px-3 py-1 text-xs font-medium transition-colors',
-                          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
-                          active
-                            ? 'border-primary bg-primary text-primary-foreground'
-                            : 'border-border bg-background text-muted-foreground hover:border-primary/40 hover:text-foreground',
-                        )}
+                        className={filterBadgeClasses(active)}
                       >
                         {tag}
                       </button>
