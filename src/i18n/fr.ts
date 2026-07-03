@@ -24,7 +24,7 @@ export const fr: Translation = {
   home: {
     seoTitle: 'Ingénieur logiciel | IA santé, cloud & systèmes distribués',
     seoDescription:
-      'Ingénieur logiciel à Montpellier — plateformes sécurisées pour l’IA critique en santé, systèmes distribués, Kubernetes et observabilité. Portfolio et projets.',
+      'Conception de systèmes d’IA de production en environnements de santé fortement réglementés. Je conçois et opère des plateformes sécurisées et scalables pour des applications d’IA critiques, de l’infrastructure à la production.',
     greeting: 'Bonjour, je suis',
     role: 'Ingénieur logiciel',
     tagline:

@@ -24,7 +24,7 @@ export const en: Translation = {
   home: {
     seoTitle: 'Software engineer | Healthcare AI, cloud & distributed systems',
     seoDescription:
-      'Software engineer in Montpellier — secure platforms for critical healthcare AI, distributed systems, Kubernetes and observability. Portfolio and projects.',
+      'Building production-grade AI systems in highly regulated healthcare environments. I design and operate secure, scalable platforms enabling critical AI applications, from infrastructure to production.',
     greeting: 'Hi, I’m',
     role: 'Software engineer',
     tagline:
