@@ -17,6 +17,7 @@ export interface Translation {
   nav: {
     home: string;
     about: string;
+    articles: string;
     projects: string;
     skills: string;
     skipToContent: string;
@@ -96,6 +97,12 @@ export interface Translation {
     title: string;
     subtitle: string;
   };
+  articles: {
+    title: string;
+    subtitle: string;
+    readOn: string;
+    contentLanguage: Record<Language, string>;
+  };
   footer: {
     rights: string;
     builtWith: string;
@@ -148,6 +155,20 @@ export interface ProjectAward {
   /** Condensed label used on compact surfaces (project card badge). */
   short?: LocalizedText;
   url?: string;
+}
+
+/** An external article or blog post. */
+export interface Article {
+  id: string;
+  title: LocalizedText;
+  summary: LocalizedText;
+  url: string;
+  platform: LocalizedText;
+  topics: string[];
+  readingTime: LocalizedText;
+  publishedAt: string;
+  /** Language of the external content (shown as a badge when it differs from the UI). */
+  contentLanguage: Language;
 }
 
 /** A portfolio project or internship. */

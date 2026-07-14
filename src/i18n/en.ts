@@ -8,6 +8,7 @@ export const en: Translation = {
   nav: {
     home: 'Home',
     about: 'About',
+    articles: 'Articles',
     projects: 'Projects',
     skills: 'Skills',
     skipToContent: 'Skip to main content',
@@ -92,6 +93,15 @@ export const en: Translation = {
     seoDescription: 'Technical skills and areas of expertise.',
     title: 'My skills',
     subtitle: 'The technologies, platforms and methods I use on a daily basis.',
+  },
+  articles: {
+    title: 'My articles',
+    subtitle: 'Technical writing on software engineering, testing and architecture.',
+    readOn: 'Read on Medium',
+    contentLanguage: {
+      en: 'Written in English',
+      fr: 'Written in French',
+    },
   },
   footer: {
     rights: 'All rights reserved.',

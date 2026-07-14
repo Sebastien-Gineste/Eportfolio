@@ -1,4 +1,12 @@
-import type { Interest, JourneyEntry, LocalizedText, Profile, Project, SkillCategory } from '@/types';
+import type {
+  Article,
+  Interest,
+  JourneyEntry,
+  LocalizedText,
+  Profile,
+  Project,
+  SkillCategory,
+} from '@/types';
 
 /**
  * Static portfolio content, kept separate from the UI so pages stay
@@ -163,6 +171,26 @@ export const interests: Interest[] = [
   { id: 'gaming', label: { fr: 'Jeux vidéo', en: 'Gaming' } },
   { id: 'sport', label: { fr: 'Sport', en: 'Sport' } },
   { id: 'anime', label: { fr: 'Animation', en: 'Anime' } },
+];
+
+export const articles: Article[] = [
+  {
+    id: 'stop-mocking-everything',
+    title: {
+      en: 'Stop Mocking Everything: The 3 Tests I Start With for a Service',
+      fr: 'Arrêtez de tout mocker : les 3 tests avec lesquels je commence pour un service',
+    },
+    summary: {
+      en: 'A practical testing strategy for backend services — fewer tests, more confidence, starting with unit, contract and E2E instead of mocking everything.',
+      fr: 'Une stratégie de tests pragmatique pour les services backend — moins de tests, plus de confiance, en commençant par l’unitaire, le contrat et l’E2E plutôt que de tout mocker.',
+    },
+    url: 'https://medium.com/@sebastien.gineste/stop-mocking-everything-the-3-tests-i-start-with-for-a-service-599954d57e12',
+    platform: { en: 'Medium', fr: 'Medium' },
+    topics: ['Software Engineering', 'Test Strategy', 'Code Quality'],
+    readingTime: { en: '14 min read', fr: '14 min de lecture' },
+    publishedAt: '2026-07',
+    contentLanguage: 'en',
+  },
 ];
 
 export const projects: Project[] = [

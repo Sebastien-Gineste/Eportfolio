@@ -11,6 +11,7 @@ import {
 import { Seo } from '@/components/Seo/Seo';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { AboutSection } from '@/components/sections/AboutSection';
+import { ArticlesSection } from '@/components/sections/ArticlesSection';
 import { ProjectsSection } from '@/components/sections/ProjectsSection';
 import { SkillsSection } from '@/components/sections/SkillsSection';
 
@@ -72,6 +73,7 @@ export function Landing() {
       <HeroSection />
       <AboutSection />
       <SkillsSection />
+      <ArticlesSection />
       <ProjectsSection />
     </>
   );

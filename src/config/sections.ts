@@ -9,13 +9,14 @@ import type { Translation } from '@/types';
  */
 export interface SectionDefinition {
   id: string;
-  navKey: keyof Pick<Translation['nav'], 'home' | 'about' | 'projects' | 'skills'>;
+  navKey: keyof Pick<Translation['nav'], 'home' | 'about' | 'articles' | 'projects' | 'skills'>;
 }
 
 export const SECTIONS: readonly SectionDefinition[] = [
   { id: 'hero', navKey: 'home' },
   { id: 'about', navKey: 'about' },
   { id: 'skills', navKey: 'skills' },
+  { id: 'articles', navKey: 'articles' },
   { id: 'projects', navKey: 'projects' },
 ] as const;
 
